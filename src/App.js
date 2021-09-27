@@ -53,23 +53,11 @@ function App() {
   const dispatch = useDispatch();
   const blockchain = useSelector((state) => state.blockchain);
   const data = useSelector((state) => state.data);
-  const [feedback, setFeedback] = useState("Maybe it's your lucky day.");
+  const [feedback, setFeedback] = useState(
+    "🢃🢃 Please input how many PsychPunks 🢃🢃 you would like to mint."
+  );
   const [claimingNft, setClaimingNft] = useState(false);
-
-  const UserInput = (mintAmount) => {
-    return (
-      <div>
-        <form onSubmit={mintAmount.onSubmit}>
-          <input
-            type="text"
-            value={mintAmount.amount}
-            onChange={mintAmount.changed}
-          />
-          <input type="submit" value="submit" />
-        </form>
-      </div>
-    );
-  };
+  const [inputValue, setInputValue] = useState("");
 
   const claimNFTs = (_amount) => {
     if (_amount <= 0) {
@@ -159,7 +147,7 @@ function App() {
                 </s.TextTitle>
                 <s.SpacerXSmall />
                 <s.TextDescription style={{ textAlign: "center" }}>
-                  Excluding gas fee.
+                  Max mint per transaction: 10
                 </s.TextDescription>
                 <s.SpacerSmall />
                 <s.TextDescription style={{ textAlign: "center" }}>
@@ -197,12 +185,21 @@ function App() {
                       disabled={claimingNft ? 1 : 0}
                       onClick={(e) => {
                         e.preventDefault();
-                        claimNFTs(1);
+
+                        // you can access the `inputValue` here
+                        // you might want to do some validation on the input here
+
+                        claimNFTs(inputValue);
                         getData();
                       }}
                     >
                       {claimingNft ? "BUSY" : "MINT"}
                     </StyledButton>
+                    <input
+                      style={{ width: "50px" }}
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                    />
                   </s.Container>
                 )}
               </>
